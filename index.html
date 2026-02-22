@@ -1,0 +1,551 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Planes V.I.P - Familia de Ganadores</title>
+  <meta name="description" content="Planes V.I.P: pronósticos diarios, tripletas y plan premium para aumentar tus oportunidades en loterías." />
+  <style>
+    :root{--bg:#0f1724;--card:#0b1220;--accent:#f59e0b;--muted:#94a3b8;--text:#e6eef8}
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Inter,Segoe UI,Helvetica,Arial;color:var(--text);background:linear-gradient(180deg,#071021 0%, #081425 100%);-webkit-font-smoothing:antialiased}
+    .container{max-width:980px;margin:40px auto;padding:24px}
+    header{display:flex;gap:16px;align-items:center;justify-content:space-between}
+    .brand{display:flex;gap:12px;align-items:center}
+    .logo{width:56px;height:56px;border-radius:10px;background:linear-gradient(135deg,#f97316,#f59e0b);display:flex;align-items:center;justify-content:center;color:#081225;font-weight:700;font-size:20px}
+    h1{font-size:20px;margin:0}
+    p.lead{color:var(--muted);margin:6px 0 18px}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+    .card{background:var(--card);padding:16px;border-radius:12px;box-shadow:0 4px 18px rgba(2,6,23,0.6)}
+    .card h3{margin:0 0 8px}
+    .price{font-weight:700;color:var(--accent)}
+    ul{margin:8px 0 0;padding-left:18px;color:var(--muted)}
+    .cta{display:flex;gap:10px;margin-top:12px}
+    .btn{background:var(--accent);color:#071221;padding:10px 12px;border-radius:8px;text-decoration:none;font-weight:600}
+    .btn.ghost{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--text)}
+    .benefits{margin-top:18px;padding:14px;border-radius:10px;background:linear-gradient(180deg,rgba(245,158,11,0.06),transparent)}
+    footer{margin-top:24px;color:var(--muted);font-size:13px;text-align:center}
+    .plan-title{display:flex;align-items:center;gap:8px}
+    .badge{background:#06313a;color:#7fffd4;padding:4px 8px;border-radius:999px;font-weight:700;font-size:12px}
+    @media (max-width:420px){.container{padding:16px;margin:18px auto}header{flex-direction:column;align-items:flex-start}h1{font-size:18px}}</style>
+</head>
+<body>
+  <main class="container">
+    <header>
+      <div class="brand">
+        <div class="logo">VG</div>
+        <div>
+          <h1>ÚNETE A NUESTRA FAMILIA DE GANADORES</h1>
+          <p class="lead">Pronósticos V.I.P, estrategias y regalos para maximizar tus oportunidades en loterías.</p>
+        </div>
+      </div>
+      <div>
+        <a class="btn" href="https://t.me/Trabajand0Ando" target="_blank" rel="noopener">Contactar en Telegram</a>
+        <a class="btn ghost" style="margin-left:8px" href="#" onclick="openKeyModal()">Ver pronóstico del día</a>
+      </div>
+    </header>
+
+    <!-- Banner de bienvenida / promoción -->
+    <div class="card" style="margin-top:16px;display:flex;align-items:center;gap:12px;">
+      <div style="flex:1">
+        <h2 style="margin:0">¡Bienvenido/a a nuestra comunidad! 👋</h2>
+        <p style="margin:6px 0;color:var(--muted)">Al unirte a cualquiera de nuestros planes, disfrutarás de <strong>4 días totalmente GRATIS</strong>. Los fines de semana (sábado y domingo) no cuentan dentro de los días gratis. Para afiliarte solo necesitas un pequeño depósito de activación; al terminar tu período puedes renovar y recibir una bonificación extra especial en caso de renovación.</p>
+      </div>
+      <div>
+        <button class="btn" onclick="activateAndContact('BASICO')">Afiliarme</button>
+      </div>
+    </div>
+
+    <section style="margin-top:20px">
+      <div class="grid">
+        <article class="card">
+          <div class="plan-title"><h3>PLAN BÁSICO (15 DÍAS)</h3><span class="badge">Más pedido</span></div>
+          <p class="price">150 bolívares — pago único</p>
+          <ul>
+            <li>5 pronósticos diarios ("animalitos") en horarios estratégicos</li>
+            <li>3 pronósticos de 9:00 AM a 2:00 PM</li>
+            <li>2 pronósticos de 3:00 PM a 7:00 PM</li>
+            <li>Una jugada diaria con altas probabilidades</li>
+            <li>Regalo: primer día GRATIS</li>
+          </ul>
+          <div class="cta"><button class="btn" onclick="activateAndContact('BASICO')">Afiliarme</button><a class="btn ghost" href="#contact">Más info</a></div>
+        </article>
+
+        <article class="card">
+          <h3>PLAN ESPECIAL TRIPLETAS (15 DÍAS)</h3>
+          <p class="price">200 bolívares</p>
+          <ul>
+            <li>3 pronósticos en tendencia para las loterías más populares</li>
+            <li>Lotto Activo, Lotto Rey y La Granjita</li>
+            <li>Alta precisión para jugadas específicas</li>
+          </ul>
+          <div class="cta"><button class="btn" onclick="activateAndContact('ESPECIAL')">Afiliarme</button><a class="btn ghost" href="#contact">Más info</a></div>
+        </article>
+
+        <article class="card">
+          <h3>PLAN PREMIUM V.I.P (30 DÍAS)</h3>
+          <p class="price">300 bolívares — VIP</p>
+          <ul>
+            <li>5 pronósticos diarios + 3 pronósticos en tendencia</li>
+            <li>Datos filtrados y exclusivos para maximizar ganancias</li>
+            <li>Cobertura: Lotto Activo, Lotto Rey, La Granjita</li>
+          </ul>
+          <div class="cta"><button class="btn" onclick="activateAndContact('PREMIUM')">Afiliarme</button><a class="btn ghost" href="#contact">Más info</a></div>
+        </article>
+      </div>
+
+      <div class="benefits">
+        <h3>🎁 BENEFICIOS EXCLUSIVOS PARA AFILIADOS</h3>
+        <ul>
+          <li>Descuentos en renovaciones y regalos sorpresa</li>
+          <li>Soporte personalizado y atención rápida</li>
+          <li>Probabilidades de acierto: 3 a 4 días (Lun-Vie), 1 o 0 fines de semana</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Área de Pronósticos Restringida -->
+    <section style="margin-top:18px">
+      <div class="card">
+        <h3>Área de Pronósticos Restringida</h3>
+        <p style="color:var(--muted);margin:6px 0">Selecciona tu plan y accede con la clave proporcionada.</p>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button class="btn" onclick="openKeyModalWithPlan('BASICO')">Ver Plan Básico</button>
+          <button class="btn" onclick="openKeyModalWithPlan('ESPECIAL')">Ver Plan Especial (Tripletas)</button>
+          <button class="btn" onclick="openKeyModalWithPlan('PREMIUM')">Ver Plan Premium</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" style="margin-top:18px">
+      <div class="card">
+        <h3>¿CÓMO AFILIARTE?</h3>
+        <ol style="color:var(--muted);margin:8px 0;padding-left:18px">
+          <li>Elige el plan que prefieras arriba.</li>
+          <li>Escríbenos por Telegram para recibir los datos de pago.</li>
+          <li>Envía el comprobante y tu número de teléfono.</li>
+          <li>¡Listo! Empezarás a recibir pronósticos.</li>
+        </ol>
+        <p style="color:var(--muted)">Recomendado: abre el chat con nuestro bot y escribe <strong>"Afiliarme"</strong> seguido del plan.</p>
+        <div class="cta">
+          <a class="btn" href="https://t.me/Trabajand0Ando" target="_blank">Abrir chat del bot</a>
+          <a class="btn ghost" href="mailto:tu@email.com">Solicitar datos por email</a>
+        </div>
+      </div>
+    </section>
+
+    <section style="margin-top:18px">
+      <div class="card">
+        <h3>¿POR QUÉ ELEGIRNOS?</h3>
+        <ul>
+          <li>Resultados comprobados y afiliados satisfechos</li>
+          <li>Transparencia y datos claros</li>
+          <li>Atención personalizada en cada paso</li>
+        </ul>
+        <p style="color:var(--muted);margin-top:8px">¡No pierdas esta oportunidad! Afíliate hoy y comienza a ganar con nosotros. 🎉✨</p>
+        <div class="cta"><a class="btn" href="https://t.me/Trabajand0Ando" target="_blank">Escríbenos ahora</a></div>
+      </div>
+    </section>
+
+    <footer>
+      <p>Esta página es una presentación informativa de los Planes V.I.P.</p>
+    </footer>
+  </main>
+  
+  <!-- Modal/overlay para jugar en línea dentro de la miniapp (iframe) -->
+    <div id="playOverlay" style="display:none;position:fixed;inset:0;background:rgba(2,6,23,0.85);backdrop-filter:blur(3px);z-index:1400;align-items:center;justify-content:center">
+    <div style="width:100%;max-width:980px;height:80vh;background:#000;border-radius:10px;overflow:hidden;position:relative">
+      <button onclick="closePlayModal()" class="btn ghost" style="position:absolute;top:10px;left:12px;z-index:3">Atrás</button>
+      <iframe id="playFrame" src="" style="width:100%;height:100%;border:0;background:#fff"></iframe>
+    </div>
+  </div>
+  
+  <div id="activationMessage" style="max-width:980px;margin:16px auto;padding:0 24px"></div>
+
+  <!-- Contenedor de secciones de pronóstico por plan (ocultas hasta validar clave) -->
+  <section id="forecasts" style="max-width:980px;margin:18px auto;padding:0 24px;">
+    <div id="forecast-basico" class="card forecast-section" style="display:none">
+      <h3>Pronósticos - Plan BÁSICO</h3>
+      <div class="forecast-content" style="color:var(--muted)">Introduce tu clave para ver los pronósticos del Plan BÁSICO.</div>
+    </div>
+
+    <div id="forecast-especial" class="card forecast-section" style="display:none">
+      <h3>Pronósticos - Plan ESPECIAL (Tripletas)</h3>
+      <div class="forecast-content" style="color:var(--muted)">Introduce tu clave para ver las tripletas del Plan ESPECIAL.</div>
+    </div>
+
+    <div id="forecast-premium" class="card forecast-section" style="display:none">
+      <h3>Pronósticos - Plan PREMIUM</h3>
+      <div class="forecast-content" style="color:var(--muted)">Introduce tu clave para ver los pronósticos del Plan PREMIUM.</div>
+    </div>
+  </section>
+
+  <!-- Modal para clave de acceso -->
+  <div id="modalOverlay" style="display:none;position:fixed;inset:0;background:rgba(2,6,23,0.6);backdrop-filter:blur(2px);z-index:1200;align-items:center;justify-content:center">
+    <div style="background:var(--card);padding:18px;border-radius:12px;max-width:420px;margin:0 auto;color:var(--text)">
+      <h3 id="modalTitle">Acceso a pronóstico</h3>
+      <p style="color:var(--muted);margin-top:6px">Introduce tu clave de acceso VIP proporcionada por @Trabajand0Ando</p>
+      <input id="accessKeyInput" placeholder="Clave de acceso" style="width:100%;padding:10px;margin-top:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:rgba(255,255,255,0.02);color:var(--text)" />
+      <div style="display:flex;gap:8px;margin-top:12px;justify-content:flex-end">
+        <button onclick="closeKeyModal()" class="btn ghost">Cancelar</button>
+        <button onclick="validateKey()" class="btn">Enviar</button>
+      </div>
+      <p id="modalMessage" style="color:var(--muted);margin-top:8px"></p>
+    </div>
+  </div>
+
+  <script>
+    // Claves por plan proporcionadas (entregadas por privado en @Trabajand0Ando)
+    const KEYS = {
+      '1234': 'BASICO',
+      '5678': 'ESPECIAL',
+      '9421': 'PREMIUM'
+    };
+
+    function showActivation(planName, price) {
+      const container = document.getElementById('activationMessage');
+      // planName is expected to be the canonical plan code (BASICO, ESPECIAL, PREMIUM)
+      const planCode = String(planName).toUpperCase();
+      container.innerHTML = `
+        <div class="card" style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
+          <div style="flex:1">
+            <strong>${planCode}</strong>
+            <div style="color:var(--muted);margin-top:6px">Precio: ${price} bolívares — Contacta por Telegram para recibir la clave privada. También puedes restaurar tu contador local haciendo clic en "Activar Plan".</div>
+          </div>
+          <div style="display:flex;gap:8px;align-items:center">
+            <button class="btn" onclick="activateAndContact('${planCode}')">Activar Plan</button>
+            <a class="btn" href="https://t.me/Trabajand0Ando?start=${planCode}" target="_blank">Contactar en Telegram</a>
+            <a class="btn ghost" href="#contact">Instrucciones</a>
+          </div>
+        </div>
+      `;
+      container.scrollIntoView({behavior:'smooth'});
+    }
+
+    // Devuelve la fecha actual en formato YYYY-MM-DD
+    function getTodayString() {
+      return new Date().toISOString().slice(0,10);
+    }
+
+    // Activa / restaura el contador del plan localmente y marca la clave válida para hoy
+    function activatePlan(plan) {
+      const code = String(plan).toUpperCase();
+      const days = (PLAN_DAYS[code]||0) + BONUS_DAYS;
+      setRemainingDays(code, days);
+      localStorage.setItem(`vip_key_date_${code}`, getTodayString());
+      const container = document.getElementById('activationMessage');
+      container.innerHTML = `
+        <div class="card">
+          <strong>${code} activado</strong>
+          <div style="color:var(--muted);margin-top:6px">Tu contador se ha restaurado a ${days} días. La clave será válida para hoy (${getTodayString()}).</div>
+        </div>
+      `;
+      container.scrollIntoView({behavior:'smooth'});
+    }
+
+    // Versión silenciosa: restaura contador y fecha sin mostrar UI (para usarse antes de redirigir al chat)
+    function activatePlanSilent(plan) {
+      const code = String(plan).toUpperCase();
+      const days = (PLAN_DAYS[code]||0) + BONUS_DAYS;
+      setRemainingDays(code, days);
+      localStorage.setItem(`vip_key_date_${code}`, getTodayString());
+    }
+
+    // Restaurar en silencio y redirigir al chat de Telegram para confirmar pago
+    function activateAndContact(plan) {
+      const code = String(plan).toUpperCase();
+      activatePlanSilent(code);
+      // Redirigir al chat del bot e incluir el plan en el query para identificar la intención
+      const tgUrl = `https://t.me/Trabajand0Ando?start=${encodeURIComponent(code)}`;
+      // Abrir en nueva pestaña
+      window.open(tgUrl, '_blank');
+    }
+
+    function openKeyModal() {
+      requestedPlan = null;
+      document.getElementById('modalTitle').textContent = 'Acceso a pronóstico';
+      document.getElementById('modalOverlay').style.display = 'flex';
+      document.getElementById('accessKeyInput').value = '';
+      document.getElementById('modalMessage').textContent = '';
+    }
+    function closeKeyModal() {
+      requestedPlan = null;
+      document.getElementById('modalOverlay').style.display = 'none';
+    }
+
+    // Abre modal indicando el plan al que se quiere acceder
+    let requestedPlan = null;
+    function openKeyModalWithPlan(plan) {
+      requestedPlan = String(plan).toUpperCase();
+      document.getElementById('modalTitle').textContent = `Acceso - ${requestedPlan}`;
+      document.getElementById('modalOverlay').style.display = 'flex';
+      document.getElementById('accessKeyInput').value = '';
+      document.getElementById('modalMessage').textContent = '';
+    }
+
+    function validateKey() {
+      const key = document.getElementById('accessKeyInput').value.trim();
+      const msg = document.getElementById('modalMessage');
+      if (!key) { msg.textContent = 'Introduce la clave para continuar.'; return; }
+      const planFromKeyRaw = KEYS[key];
+      const planFromKey = planFromKeyRaw ? String(planFromKeyRaw).toUpperCase() : null;
+      const planRequested = requestedPlan ? String(requestedPlan).toUpperCase() : null;
+
+      // Verificar si la clave está vinculada a un plan y si la fecha de validez coincide con hoy
+      const today = getTodayString();
+      const dateKeyForPlan = planFromKey ? localStorage.getItem(`vip_key_date_${planFromKey}`) : null;
+
+      if (planRequested) {
+        // Cuando se abrió modal para un plan específico, exigir que la clave corresponda
+        if (!planFromKey) {
+          msg.textContent = `⚠️ Clave incorrecta para ${planRequested}. Solicita tu acceso VIP con @Trabajand0Ando`;
+          return;
+        }
+
+        if (planFromKey !== planRequested) {
+          msg.textContent = `⚠️ La clave ingresada corresponde al plan ${planFromKey}. Abre ese plan o solicita la clave correcta a @Trabajand0Ando`;
+          return;
+        }
+
+        // La clave corresponde al plan solicitado; comprobar la fecha
+        if (dateKeyForPlan !== today) {
+          msg.textContent = `⚠️ La clave ha caducado. Pulsa "Activar Plan" para restaurar el contador y obtener validez para hoy.`;
+          return;
+        }
+
+        // Todo OK
+        closeKeyModal();
+        showForecastResults(planRequested);
+        return;
+      }
+
+      // Sin plan solicitado previamente: aceptar cualquier clave válida, pero exigir fecha
+      if (planFromKey) {
+        if (dateKeyForPlan !== today) {
+          msg.textContent = '⚠️ La clave es válida pero ha caducado. Solicita renovación o pulsa "Activar Plan".';
+          return;
+        }
+        closeKeyModal();
+        showForecastResults(planFromKey);
+        return;
+      }
+
+      msg.textContent = '⚠️ Clave incorrecta. Solicita tu acceso VIP con @Trabajand0Ando';
+    }
+
+    // Manejo de días restantes por plan en localStorage (incluye bono)
+    const PLAN_DAYS = { 'BASICO': 15, 'ESPECIAL': 15, 'PREMIUM': 30 };
+    const BONUS_DAYS = 4;
+
+    function storageKeyFor(plan) { return `vip_days_${plan}`; }
+    function getRemainingDays(plan) {
+      const raw = localStorage.getItem(storageKeyFor(plan));
+      if (raw === null) return null;
+      const n = parseInt(raw, 10); return Number.isNaN(n) ? null : n;
+    }
+    function setRemainingDays(plan, days) { localStorage.setItem(storageKeyFor(plan), String(days)); }
+    function initDaysIfNeeded(plan) {
+      let days = getRemainingDays(plan);
+      if (days === null) { days = (PLAN_DAYS[plan]||0) + BONUS_DAYS; setRemainingDays(plan, days); }
+      return days;
+    }
+    function decrementRemainingDays(plan) {
+      let days = initDaysIfNeeded(plan);
+      days = Math.max(0, days - 1);
+      setRemainingDays(plan, days);
+      return days;
+    }
+
+    function showForecastResults(plan) {
+      const PLAY_URL = 'https://juegaenlineaplay.com/t9rfyaewi';
+      const sections = {
+        'BASICO': document.getElementById('forecast-basico'),
+        'ESPECIAL': document.getElementById('forecast-especial'),
+        'PREMIUM': document.getElementById('forecast-premium')
+      };
+
+      // Ocultar todas las secciones
+      Object.values(sections).forEach(s => { if (s) s.style.display = 'none'; });
+
+      // Restar un día por uso de clave
+      const remaining = decrementRemainingDays(plan);
+
+      if (remaining <= 0) {
+        const sec = sections[plan];
+        if (sec) {
+          sec.querySelector('.forecast-content').innerHTML = `<p style="color:var(--muted)">Tu clave ha caducado. Solicita renovación con @Trabajand0Ando.</p>`;
+          sec.style.display = 'block'; sec.scrollIntoView({behavior:'smooth'});
+        }
+        return;
+      }
+
+      let html = `<h4 style="margin-top:6px">Efectividad estimada: 3-4 aciertos días éxito (Lun-Vie)</h4>`;
+      html += `<p style="margin-top:8px;color:var(--muted)"><strong>Días restantes:</strong> ${remaining}</p>`;
+
+      if (plan === 'BASICO') {
+        html += `
+          <strong>Plan BÁSICO (5 pronósticos)</strong>
+          <div style="color:var(--muted);margin-top:8px;white-space:pre-wrap;">
+¡Suscríbete ahora y forma parte de la comunidad de ganadores! No te arrepentirás de esta decisión. Queremos ofrecerte la oportunidad de acceder a valiosos datos de lotto activo y granjita que podrían aumentar tus posibilidades de éxito en los juegos de azar. Nuestra comunidad está llena de entusiastas de los juegos de lotería y estamos listos para compartir nuestra experiencia contigo.
+
+🚨 Pronostico del día 22/02/2026🚨
+-———🔥————-
+lotto activo
+-———🍀————-
+lotto rey
+-———🍀————-
+la granjita
+-———🍀————-
+Selvaplus
+/———-⭐️————/
+9:00 AM / 2:00 PM
+-———🔥———
+✅ 15 🦊- ZORRO
+✅ 10 🐯 - TIGRE
+✅ 28 ⬛️ - ZAMURO
+———🔥————
+3:00 PM / 7:00 PM
+——––––––––
+✅ 21 🐓 - GALLO
+✅ 12 🐎 - CABALLO
+/———-⭐️————/
+
+En nuestra comunidad, hemos seleccionado cuidadosamente estos datos basados en análisis y tendencias para brindarte una ventaja estratégica en tus próximos juegos. Nuestro objetivo es ayudarte a tomar decisiones informadas y maximizar tus posibilidades de ganar.
+
+No olvides que la suerte siempre desempeña un papel importante en los juegos de azar. Sin embargo, al aprovechar nuestros datos confiables y las experiencias compartidas por nuestros miembros, puedes aumentar tus posibilidades de éxito.
+
+¡MUCHA SUERTE EN TUS PRÓXIMOS JUEGOS Y MIL BENDICIONES!
+
+Recuerda que, si tienes éxito en los tres primeros sorteos, es recomendable no continuar jugando. En nuestra experiencia, hemos observado que es mejor asegurar una victoria y disfrutar de tus ganancias.
+
+Con nuestra comunidad, no solo recibirás datos valiosos, sino que también formarás parte de un grupo apasionado de jugadores que comparten el mismo objetivo: ganar. Nuestros miembros se benefician de consejos adicionales, actualizaciones regulares y un ambiente de apoyo donde puedes intercambiar ideas y estrategias con otros jugadores.
+
+No pierdas esta oportunidad de unirte a nosotros y aumentar tus posibilidades de éxito en los juegos de lotería. Suscríbete ahora y comienza a recibir nuestros datos confiables y efectivos.
+
+¡Te esperamos en nuestra comunidad de ganadores!
+
+Atentamente,
+          </div>
+          <div class="cta" style="margin-top:10px"><a class="btn" href="#" onclick="openPlayModal('${PLAY_URL}')">Juega en línea aquí</a></div>
+        `;
+        sections['BASICO'].querySelector('.forecast-content').innerHTML = html;
+        sections['BASICO'].style.display = 'block'; sections['BASICO'].scrollIntoView({behavior:'smooth'});
+
+      } else if (plan === 'ESPECIAL') {
+        html += `
+          <strong>Plan ESPECIAL TRIPLETAS (tripletas)</strong>
+          <div style="color:var(--muted);margin-top:8px;white-space:pre-wrap;">
+¡Suscríbete ahora y forma parte de la comunidad de ganadores! No te arrepentirás de esta decisión. Queremos ofrecerte la oportunidad de acceder a valiosos datos de lotto activo y granjita que podrían aumentar tus posibilidades de éxito en los juegos de azar. Nuestra comunidad está llena de entusiastas de los juegos de lotería y estamos listos para compartir nuestra experiencia contigo.
+
+🚨Pronostico del día 22/02/2026🚨
+-———🔥————-
+lotto activo
+-———🍀————-
+la granjita
+-———🍀————-
+Selvaplus
+-———🍀————-
+tripleta 1 (Los Fijos)
+-———🔥––———-
+✅ 15 🦊- ZORRO
+✅ 10 🐯 - TIGRE
+✅ 28 ⬛️ - ZAMURO
+-———🔥––·–
+tripleta 2 (Mañaneros)
+-———🔥—––··–
+✅ 21 🐓 - GALLO
+✅ 12 🐎 - CABALLO
+✅ 03 🐛 - CIEMPIÉS
+———🔥————
+tripleta 3 (El Batacazo)
+-———🔥———
+✅ 17 🦃 - PAVO
+✅ 8 🐭 - RATÓN
+✅ 27 🐶 - PERRO
+/———-⭐️———–/
+
+En nuestra comunidad, hemos seleccionado cuidadosamente estos datos basados en análisis y tendencias para brindarte una ventaja estratégica en tus próximos juegos. Nuestro objetivo es ayudarte a tomar decisiones informadas y maximizar tus posibilidades de ganar.
+
+No olvides que la suerte siempre desempeña un papel importante en los juegos de azar. Sin embargo, al aprovechar nuestros datos confiables y las experiencias compartidas por nuestros miembros, puedes aumentar tus posibilidades de éxito.
+
+¡MUCHA SUERTE EN TUS PRÓXIMOS JUEGOS Y MIL BENDICIONES!
+
+Recuerda que, si tienes éxito en los tres primeros sorteos, es recomendable no continuar jugando. En nuestra experiencia, hemos observado que es mejor asegurar una victoria y disfrutar de tus ganancias.
+          </div>
+          <div class="cta" style="margin-top:10px"><a class="btn" href="#" onclick="openPlayModal('${PLAY_URL}')">Juega en línea aquí</a></div>
+        `;
+        sections['ESPECIAL'].querySelector('.forecast-content').innerHTML = html;
+        sections['ESPECIAL'].style.display = 'block'; sections['ESPECIAL'].scrollIntoView({behavior:'smooth'});
+
+      } else if (plan === 'PREMIUM') {
+        html += `
+          <strong>Plan PREMIUM (combinado)</strong>
+          <div style="color:var(--muted);margin-top:8px;white-space:pre-wrap;">
+En este plan PREMIUM recibes tanto los Animalitos como las Tripletas completas tal como se publican en la comunidad.
+
+Animalitos — Mañana (9:00 AM / 2:00 PM)
+✅ 15 🦊 - ZORRO
+✅ 10 🐯 - TIGRE
+✅ 28 ⬛️ - ZAMURO
+
+Animalitos — Tarde (3:00 PM / 7:00 PM)
+✅ 21 🐓 - GALLO
+✅ 12 🐎 - CABALLO
+✅ 03 🐛 - CIEMPIÉS
+
+Tripletas
+Lotto activo
+Selvaplus
+La granjita
+
+tripleta 1 (Los Fijos)
+✅ 15 🦊- ZORRO
+✅ 10 🐯 - TIGRE
+✅ 28 ⬛️ - ZAMURO
+
+tripleta 2 (Mañaneros)
+✅ 21 🐓 - GALLO
+✅ 12 🐎 - CABALLO
+✅ 03 🐛 - CIEMPIÉS
+
+tripleta 3 (El Batacazo)
+✅ 17 🦃 - PAVO
+✅ 8 🐭 - RATÓN
+✅ 27 🐶 - PERRO
+          </div>
+          <div class="cta" style="margin-top:10px"><a class="btn" href="#" onclick="openPlayModal('${PLAY_URL}')">Juega en línea aquí</a></div>
+        `;
+        sections['PREMIUM'].querySelector('.forecast-content').innerHTML = html;
+        sections['PREMIUM'].style.display = 'block'; sections['PREMIUM'].scrollIntoView({behavior:'smooth'});
+      }
+
+      // Si quedan 4 o menos días mostrar aviso
+      if (remaining <= 4) {
+        const sec = sections[plan];
+        if (sec) {
+          const warn = document.createElement('div');
+          warn.style.color = '#f59e0b'; warn.style.marginTop = '8px';
+          warn.textContent = 'Recuerda renovar tu plan antes de que la clave caduque.';
+          sec.querySelector('.forecast-content').appendChild(warn);
+        }
+      }
+    }
+
+    // Abre el modal con iframe para jugar dentro de la miniapp
+    function openPlayModal(url) {
+      const overlay = document.getElementById('playOverlay');
+      const frame = document.getElementById('playFrame');
+      if (!overlay || !frame) return;
+      frame.src = url;
+      overlay.style.display = 'flex';
+    }
+    function closePlayModal() {
+      const overlay = document.getElementById('playOverlay');
+      const frame = document.getElementById('playFrame');
+      if (!overlay || !frame) return;
+      frame.src = 'about:blank';
+      overlay.style.display = 'none';
+    }
+  </script>
+</body>
+</html>
