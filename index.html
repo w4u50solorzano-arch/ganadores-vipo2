@@ -188,7 +188,7 @@
       <input id="accessKeyInput" placeholder="Clave de acceso" style="width:100%;padding:10px;margin-top:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:rgba(255,255,255,0.02);color:var(--text)" />
       <div style="display:flex;gap:8px;margin-top:12px;justify-content:flex-end">
         <button onclick="closeKeyModal()" class="btn ghost">Cancelar</button>
-        <button onclick="validateKey()" class="btn">Enviar</button>
+        <button id="modalSubmitBtn" onclick="validateKey()" class="btn">Enviar</button>
       </div>
       <p id="modalMessage" style="color:var(--muted);margin-top:8px"></p>
     </div>
@@ -223,32 +223,34 @@
     }
 
     // Devuelve la fecha actual en formato YYYY-MM-DD
-    function getTodayString() {
-      return new Date().toISOString().slice(0,10);
-    }
+    function getTodayString() { return new Date().toISOString().slice(0,10); }
 
-    // Activa / restaura el contador del plan localmente y marca la clave válida para hoy
+    // Nueva estructura persistente por plan en localStorage:
+    // key: `vip_access_${plan}` -> JSON { activatedAt: 'YYYY-MM-DD', remainingDays: number }
+    function accessStorageKey(plan) { return `vip_access_${plan}`; }
+
+    // Activa / restaura el contador del plan localmente (persistente hasta consumir días)
     function activatePlan(plan) {
       const code = String(plan).toUpperCase();
       const days = (PLAN_DAYS[code]||0) + BONUS_DAYS;
-      setRemainingDays(code, days);
-      localStorage.setItem(`vip_key_date_${code}`, getTodayString());
+      const data = { activatedAt: getTodayString(), remainingDays: days };
+      localStorage.setItem(accessStorageKey(code), JSON.stringify(data));
       const container = document.getElementById('activationMessage');
       container.innerHTML = `
         <div class="card">
           <strong>${code} activado</strong>
-          <div style="color:var(--muted);margin-top:6px">Tu contador se ha restaurado a ${days} días. La clave será válida para hoy (${getTodayString()}).</div>
+          <div style="color:var(--muted);margin-top:6px">Tu contador se ha establecido en ${days} días. La clave permanecerá válida hasta que se consuman los días asignados.</div>
         </div>
       `;
       container.scrollIntoView({behavior:'smooth'});
     }
 
-    // Versión silenciosa: restaura contador y fecha sin mostrar UI (para usarse antes de redirigir al chat)
+    // Versión silenciosa: restaura sin mostrar UI (para usarse antes de redirigir al chat)
     function activatePlanSilent(plan) {
       const code = String(plan).toUpperCase();
       const days = (PLAN_DAYS[code]||0) + BONUS_DAYS;
-      setRemainingDays(code, days);
-      localStorage.setItem(`vip_key_date_${code}`, getTodayString());
+      const data = { activatedAt: getTodayString(), remainingDays: days };
+      localStorage.setItem(accessStorageKey(code), JSON.stringify(data));
     }
 
     // Restaurar en silencio y redirigir al chat de Telegram para confirmar pago
@@ -267,6 +269,7 @@
       document.getElementById('modalOverlay').style.display = 'flex';
       document.getElementById('accessKeyInput').value = '';
       document.getElementById('modalMessage').textContent = '';
+      setModalSubmitEnabled(true);
     }
     function closeKeyModal() {
       requestedPlan = null;
@@ -280,7 +283,27 @@
       document.getElementById('modalTitle').textContent = `Acceso - ${requestedPlan}`;
       document.getElementById('modalOverlay').style.display = 'flex';
       document.getElementById('accessKeyInput').value = '';
-      document.getElementById('modalMessage').textContent = '';
+      // Mostrar días restantes y deshabilitar si 0
+      const days = getRemainingDays(requestedPlan);
+      const msg = document.getElementById('modalMessage');
+      if (days === null) {
+        msg.textContent = 'Clave no activada. Pulsa "Activar Plan" para iniciar tu contador.';
+        setModalSubmitEnabled(false);
+      } else if (days <= 0) {
+        msg.textContent = 'La clave ha expirado (0 días). Pulsa "Activar Plan" para restaurar el contador.';
+        setModalSubmitEnabled(false);
+      } else {
+        msg.textContent = `Días restantes: ${days}. Puedes usar la clave mientras queden días.`;
+        setModalSubmitEnabled(true);
+      }
+    }
+
+    function setModalSubmitEnabled(enabled) {
+      const btn = document.getElementById('modalSubmitBtn');
+      if (!btn) return;
+      btn.disabled = !enabled;
+      btn.style.opacity = enabled ? '1' : '0.6';
+      btn.style.pointerEvents = enabled ? 'auto' : 'none';
     }
 
     function validateKey() {
@@ -291,46 +314,26 @@
       const planFromKey = planFromKeyRaw ? String(planFromKeyRaw).toUpperCase() : null;
       const planRequested = requestedPlan ? String(requestedPlan).toUpperCase() : null;
 
-      // Verificar si la clave está vinculada a un plan y si la fecha de validez coincide con hoy
-      const today = getTodayString();
-      const dateKeyForPlan = planFromKey ? localStorage.getItem(`vip_key_date_${planFromKey}`) : null;
+      if (!planFromKey) { msg.textContent = '⚠️ Clave incorrecta. Solicita tu acceso VIP con @Trabajand0Ando'; return; }
 
-      if (planRequested) {
-        // Cuando se abrió modal para un plan específico, exigir que la clave corresponda
-        if (!planFromKey) {
-          msg.textContent = `⚠️ Clave incorrecta para ${planRequested}. Solicita tu acceso VIP con @Trabajand0Ando`;
-          return;
-        }
+      // Aceptar solo si hay un acceso activado con días restantes
+      const raw = localStorage.getItem(accessStorageKey(planFromKey));
+      const access = raw ? JSON.parse(raw) : null;
+      const daysLeft = access && typeof access.remainingDays === 'number' ? access.remainingDays : 0;
 
-        if (planFromKey !== planRequested) {
-          msg.textContent = `⚠️ La clave ingresada corresponde al plan ${planFromKey}. Abre ese plan o solicita la clave correcta a @Trabajand0Ando`;
-          return;
-        }
-
-        // La clave corresponde al plan solicitado; comprobar la fecha
-        if (dateKeyForPlan !== today) {
-          msg.textContent = `⚠️ La clave ha caducado. Pulsa "Activar Plan" para restaurar el contador y obtener validez para hoy.`;
-          return;
-        }
-
-        // Todo OK
-        closeKeyModal();
-        showForecastResults(planRequested);
+      if (planRequested && planFromKey !== planRequested) {
+        msg.textContent = `⚠️ La clave ingresada corresponde al plan ${planFromKey}. Abre ese plan o solicita la clave correcta a @Trabajand0Ando`;
         return;
       }
 
-      // Sin plan solicitado previamente: aceptar cualquier clave válida, pero exigir fecha
-      if (planFromKey) {
-        if (dateKeyForPlan !== today) {
-          msg.textContent = '⚠️ La clave es válida pero ha caducado. Solicita renovación o pulsa "Activar Plan".';
-          return;
-        }
-        closeKeyModal();
-        showForecastResults(planFromKey);
+      if (!access || daysLeft <= 0) {
+        msg.textContent = '⚠️ La clave no está activada o se han consumido los días. Pulsa "Activar Plan" para restaurar tu contador.';
         return;
       }
 
-      msg.textContent = '⚠️ Clave incorrecta. Solicita tu acceso VIP con @Trabajand0Ando';
+      // Todo OK
+      closeKeyModal();
+      showForecastResults(planFromKey);
     }
 
     // Manejo de días restantes por plan en localStorage (incluye bono)
@@ -338,20 +341,39 @@
     const BONUS_DAYS = 4;
 
     function storageKeyFor(plan) { return `vip_days_${plan}`; }
+
+    // Obtener los días restantes desde la nueva estructura `vip_access_{plan}`.
+    // Si existe la clave antigua `vip_days_{plan}` migramos para conservar el estado.
     function getRemainingDays(plan) {
-      const raw = localStorage.getItem(storageKeyFor(plan));
-      if (raw === null) return null;
-      const n = parseInt(raw, 10); return Number.isNaN(n) ? null : n;
+      const key = accessStorageKey(plan);
+      const raw = localStorage.getItem(key);
+      if (raw) {
+        try { const obj = JSON.parse(raw); return (obj && typeof obj.remainingDays === 'number') ? obj.remainingDays : null; } catch(e) { return null; }
+      }
+      // migración desde almacenamiento antiguo
+      const old = localStorage.getItem(storageKeyFor(plan));
+      if (old !== null) {
+        const n = parseInt(old, 10);
+        if (!Number.isNaN(n)) {
+          const data = { activatedAt: getTodayString(), remainingDays: n };
+          localStorage.setItem(key, JSON.stringify(data));
+          return n;
+        }
+      }
+      return null;
     }
-    function setRemainingDays(plan, days) { localStorage.setItem(storageKeyFor(plan), String(days)); }
-    function initDaysIfNeeded(plan) {
-      let days = getRemainingDays(plan);
-      if (days === null) { days = (PLAN_DAYS[plan]||0) + BONUS_DAYS; setRemainingDays(plan, days); }
-      return days;
+
+    function setRemainingDays(plan, days) {
+      const key = accessStorageKey(plan);
+      const raw = localStorage.getItem(key);
+      const base = raw ? JSON.parse(raw) : { activatedAt: getTodayString(), remainingDays: 0 };
+      base.remainingDays = Number.isFinite(days) ? Math.max(0, Math.floor(days)) : 0;
+      localStorage.setItem(key, JSON.stringify(base));
     }
+
     function decrementRemainingDays(plan) {
-      let days = initDaysIfNeeded(plan);
-      days = Math.max(0, days - 1);
+      const current = getRemainingDays(plan);
+      const days = (current === null) ? 0 : Math.max(0, current - 1);
       setRemainingDays(plan, days);
       return days;
     }
@@ -482,14 +504,28 @@ Recuerda que, si tienes éxito en los tres primeros sorteos, es recomendable no 
           <strong>Plan PREMIUM (combinado)</strong>
           <div style="color:var(--muted);margin-top:8px;white-space:pre-wrap;">
 En este plan PREMIUM recibes tanto los Animalitos como las Tripletas completas tal como se publican en la comunidad.
-🚨Pronostico del día 24/02/2026🚨
-Animalitos — Mañana (9:00 AM / 2:00 PM)
+
+🚨 Pronostico del día 24/02/2026🚨
+-———🔥————-
+lotto activo
+-———🍀————-
+lotto rey
+-———🍀————-
+la granjita
+-———🍀————-
+Selvaplus
+/———-⭐️————/
+9:00 AM / 2:00 PM
+-———🔥———
 ✅ 17 🦃 - PAVO 
 ✅ 10 🐯 - TIGRE 
 ✅ 28 ⬛️ - ZAMURO
-Animalitos — Tarde (3:00 PM / 7:00 PM)
+———🔥————
+3:00 PM / 7:00 PM
+——––––––––
 ✅ 10 🐯 - TIGRE
-✅ 29 🐘 - ELEFANTE 
+✅ 29 🐘 - ELEFANTE
+/———-⭐️————/
 
 Tripletas
 Lotto activo
@@ -497,19 +533,23 @@ Selvaplus
 La granjita
 
 tripleta 1 (Los Fijos)
+-———🔥––———-
 ✅ 17 🦃 - PAVO 
 ✅ 10 🐯 - TIGRE 
 ✅ 28 ⬛️ - ZAMURO
+-———🔥––·–
 tripleta 2 (Mañaneros)
+-———🔥—––··–
 ✅ 19 🐐 - CHIVO 
 ✅ 29 🐘 - ELEFANTE 
 ✅ 11 🐱 - GATO
+———🔥————
 tripleta 3 (El Batacazo)
 -———🔥———
 ✅ 12 🐎 - CABALLO
 ✅ 03 🐛 - CIEMPIÉS 
 ✅ 19 🐐 - CHIVO 
-
+/———-⭐️———–/
           </div>
           <div class="cta" style="margin-top:10px"><a class="btn" href="#" onclick="openPlayModal('${PLAY_URL}')">Juega en línea aquí</a></div>
         `;
@@ -547,7 +587,3 @@ tripleta 3 (El Batacazo)
   </script>
 </body>
 </html>
-
-
-
-
